@@ -7,7 +7,7 @@ const server = http.createServer((req, res) => {
     res.write('Welcome to Node Server');
     res.end();
   } else if (req.url === '/about') {
-    res.write('About Page');
+    res.write('AboutPage');
     res.end();
   } else if (req.url === '/contact') {
     res.write('Contact Page');
