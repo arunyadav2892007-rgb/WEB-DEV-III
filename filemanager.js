@@ -1,24 +1,28 @@
 const fs = require('fs');
-const path = require('path');
-
-const filePath = path.join(__dirname, 'test.txt');
-
 
 console.log('Creating File...');
-fs.writeFileSync(filePath, 'Hello Node.js\n', 'utf8');
-console.log('File Created');
+fs.writeFile('test.txt', 'H\n', (err) => {
+  if (err) return console.log('Error creating file');
+  console.log('File Created');
 
+  console.log('Reading File:');
+  fs.readFile('test.txt', 'utf8', (err, data) => {
+    if (err) return console.log('Error reading file');
+    console.log(data);
 
-console.log('Reading File:');
-const content1 = fs.readFileSync(filePath, 'utf8');
-console.log(content1.trim());
+    fs.appendFile('test.txt', 'L\n', (err) => {
+      if (err) return console.log('Error updating file');
+      console.log('File Updated');
 
+      fs.readFile('test.txt', 'utf8', (err, updatedData) => {
+        if (err) return console.log('Error reading file');
+        console.log(updatedData);
 
-fs.appendFileSync(filePath, 'Learning FS Module\n', 'utf8');
-console.log('File Updated:');
-const content2 = fs.readFileSync(filePath, 'utf8');
-console.log(content2.trim());
-
-
-fs.unlinkSync(filePath);
-console.log('File Deleted');
+        fs.unlink('test.txt', (err) => {
+          if (err) return console.log('Error deleting file');
+          console.log('File Deleted');
+        });
+      });
+    });
+  });
+});
