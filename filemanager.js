@@ -15,7 +15,7 @@ fs.writeFile('test.txt', 'H\n', (err) => {
       console.log('File Updated');
 
       fs.readFile('test.txt', 'utf8', (err, updatedData) => {
-        if (err) return console.log('Error reading file');
+        if (err) return console.log('reading file');
         console.log(updatedData);
 
         fs.unlink('test.txt', (err) => {
