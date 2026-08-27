@@ -1,25 +1,24 @@
 const http = require('http');
 
-const PORT = 3000;
-
 const server = http.createServer((req, res) => {
-  res.setHeader('Content-Type', 'text/plain');
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
 
-  if (req.url === '/' && req.method === 'GET') {
-    res.statusCode = 200;
-    res.end('Welcome to Node Server');
-  } else if (req.url === '/about' && req.method === 'GET') {
-    res.statusCode = 200;
-    res.end('About Page');
-  } else if (req.url === '/contact' && req.method === 'GET') {
-    res.statusCode = 200;
-    res.end('Contact Page');
+  if (req.url === '/') {
+    res.write('Welcome to Node Server');
+    res.end();
+  } else if (req.url === '/about') {
+    res.write('About Page');
+    res.end();
+  } else if (req.url === '/contact') {
+    res.write('Contact Page');
+    res.end();
   } else {
-    res.statusCode = 404;
-    res.end('404 Not Found');
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.write('404 Not Found');
+    res.end();
   }
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
+server.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
