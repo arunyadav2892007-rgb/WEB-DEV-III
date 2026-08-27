@@ -5,7 +5,7 @@ fs.writeFile('test.txt', 'H\n', (err) => {
   if (err) return console.log('Error creating file');
   console.log('File Created');
 
-  console.log('Reading File:');
+  console.log('ReadingFile:');
   fs.readFile('test.txt', 'utf8', (err, data) => {
     if (err) return console.log('Error reading file');
     console.log(data);
