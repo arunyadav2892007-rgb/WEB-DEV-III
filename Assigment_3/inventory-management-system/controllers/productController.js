@@ -1,7 +1,6 @@
 const Product = require('../models/Product');
 
-// @desc    Create a new product
-// @route   POST /api/products
+
 exports.createProduct = async (req, res, next) => {
   try {
     const product = await Product.create(req.body);
@@ -11,13 +10,12 @@ exports.createProduct = async (req, res, next) => {
   }
 };
 
-// @desc    Get all products (with filtering, sorting, pagination)
-// @route   GET /api/products
+
 exports.getAllProducts = async (req, res, next) => {
   try {
     const { category, supplier, search, minPrice, maxPrice, sort, page = 1, limit = 10 } = req.query;
 
-    // 1. Build Filter Object
+    
     const queryObj = {};
     if (category) queryObj.category = category;
     if (supplier) queryObj.supplier = { $regex: supplier, $options: 'i' };
@@ -33,13 +31,13 @@ exports.getAllProducts = async (req, res, next) => {
       if (maxPrice) queryObj.price.$lte = Number(maxPrice);
     }
 
-    // 2. Sorting
-    let sortBy = '-createdAt'; // Default: newest first
+    
+    let sortBy = '-createdAt'; 
     if (sort) {
       sortBy = sort.split(',').join(' ');
     }
 
-    // 3. Pagination
+    
     const pageNum = Math.max(1, parseInt(page, 10));
     const limitNum = Math.max(1, parseInt(limit, 10));
     const skip = (pageNum - 1) * limitNum;
@@ -62,8 +60,7 @@ exports.getAllProducts = async (req, res, next) => {
   }
 };
 
-// @desc    Get single product by ID
-// @route   GET /api/products/:id
+
 exports.getProductById = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -76,8 +73,7 @@ exports.getProductById = async (req, res, next) => {
   }
 };
 
-// @desc    Update product details
-// @route   PUT /api/products/:id
+
 exports.updateProduct = async (req, res, next) => {
   try {
     const product = await Product.findByIdAndUpdate(
@@ -96,8 +92,7 @@ exports.updateProduct = async (req, res, next) => {
   }
 };
 
-// @desc    Adjust stock safely (Restock / Sale)
-// @route   PATCH /api/products/:id/stock
+
 exports.adjustStock = async (req, res, next) => {
   try {
     const { change } = req.body;
@@ -111,7 +106,7 @@ exports.adjustStock = async (req, res, next) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Prevent negative stock on sales (negative change)
+    
     if (product.quantity + change < 0) {
       return res.status(400).json({
         message: `Insufficient stock. Current quantity is ${product.quantity}, cannot deduct ${Math.abs(change)}`
@@ -148,8 +143,7 @@ exports.deleteProduct = async (req, res, next) => {
   }
 };
 
-// @desc    Low-Stock Alert Report (quantity <= reorderLevel)
-// @route   GET /api/products/low-stock
+
 exports.getLowStockReport = async (req, res, next) => {
   try {
     const lowStockItems = await Product.aggregate([
@@ -178,8 +172,7 @@ exports.getLowStockReport = async (req, res, next) => {
   }
 };
 
-// @desc    Category-wise Inventory Summary
-// @route   GET /api/products/summary
+
 exports.getCategorySummary = async (req, res, next) => {
   try {
     const summary = await Product.aggregate([
