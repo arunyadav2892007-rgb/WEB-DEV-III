@@ -52,7 +52,7 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-// Virtual field to automatically calculate stockValue (price * quantity)
+
 productSchema.virtual('stockValue').get(function () {
   return this.price * this.quantity;
 });
